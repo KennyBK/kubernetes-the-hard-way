@@ -19,9 +19,9 @@ cat machines.txt
 ```
 
 ```text
-XXX.XXX.XXX.XXX server.kubernetes.local server  
-XXX.XXX.XXX.XXX node-0.kubernetes.local node-0 10.200.0.0/24
-XXX.XXX.XXX.XXX node-1.kubernetes.local node-1 10.200.1.0/24
+XXX.XXX.XXX.XXX controlplane.kubernetes.local controlplane  
+XXX.XXX.XXX.XXX node01.kubernetes.local node01 10.200.0.0/24
+XXX.XXX.XXX.XXX node02.kubernetes.local node02 10.200.1.0/24
 ```
 
 Now it's your turn to create a `machines.txt` file with the details for the three machines you will be using to create your Kubernetes cluster. Use the example machine database from above and add the details for your machines. 
@@ -34,7 +34,7 @@ SSH will be used to configure the machines in the cluster. Verify that you have 
 
 If `root` SSH access is enabled for each of your machines you can skip this section.
 
-By default, a new `debian` install disables SSH access for the `root` user. This is done for security reasons as the `root` user has total administrative control of unix-like systems. If a weak password is used on a machine connected to the internet, well, let's just say it's only a matter of time before your machine belongs to someone else. As mentioned earlier, we are going to enable `root` access over SSH in order to streamline the steps in this tutorial. Security is a tradeoff, and in this case, we are optimizing for convenience. Log on to each machine via SSH using your user account, then switch to the `root` user using the `su` command:
+By default, a new `ubuntu` install disables SSH access for the `root` user. This is done for security reasons as the `root` user has total administrative control of unix-like systems. If a weak password is used on a machine connected to the internet, well, let's just say it's only a matter of time before your machine belongs to someone else. As mentioned earlier, we are going to enable `root` access over SSH in order to streamline the steps in this tutorial. Security is a tradeoff, and in this case, we are optimizing for convenience. Log on to each machine via SSH using your user account, then switch to the `root` user using the `su` command:
 
 ```bash
 su - root
@@ -56,7 +56,7 @@ systemctl restart sshd
 
 ### Generate and Distribute SSH Keys
 
-In this section you will generate and distribute an SSH keypair to the `server`, `node-0`, and `node-1`, machines, which will be used to run commands on those machines throughout this tutorial. Run the following commands from the `jumpbox` machine.
+In this section you will generate and distribute an SSH keypair to the `controlplane`, `node01`, and `node02`, machines, which will be used to run commands on those machines throughout this tutorial. Run the following commands from the `student-node` machine.
 
 Generate a new SSH key:
 
@@ -90,16 +90,16 @@ done < machines.txt
 ```
 
 ```text
-aarch64 GNU/Linux
-aarch64 GNU/Linux
-aarch64 GNU/Linux
+x86_64 GNU/Linux
+x86_64 GNU/Linux
+x86_64 GNU/Linux
 ```
 
 ## Hostnames
 
-In this section you will assign hostnames to the `server`, `node-0`, and `node-1` machines. The hostname will be used when executing commands from the `jumpbox` to each machine. The hostname also plays a major role within the cluster. Instead of Kubernetes clients using an IP address to issue commands to the Kubernetes API server, those clients will use the `server` hostname instead. Hostnames are also used by each worker machine, `node-0` and `node-1` when registering with a given Kubernetes cluster.
+In this section you will assign hostnames to the `controlplane`, `node01`, and `node02` machines. The hostname will be used when executing commands from the `student-node` to each machine. The hostname also plays a major role within the cluster. Instead of Kubernetes clients using an IP address to issue commands to the Kubernetes API server, those clients will use the `controlplane` hostname instead. Hostnames are also used by each worker machine, `node01` and `node02` when registering with a given Kubernetes cluster.
 
-To configure the hostname for each machine, run the following commands on the `jumpbox`.
+To configure the hostname for each machine, run the following commands on the `student-node`.
 
 Set the hostname on each machine listed in the `machines.txt` file:
 
@@ -120,14 +120,14 @@ done < machines.txt
 ```
 
 ```text
-server.kubernetes.local
-node-0.kubernetes.local
-node-1.kubernetes.local
+controlplane.kubernetes.local
+node01.kubernetes.local
+node02.kubernetes.local
 ```
 
 ## Host Lookup Table
 
-In this section you will generate a `hosts` file which will be appended to `/etc/hosts` file on `jumpbox` and to the `/etc/hosts` files on all three cluster members used for this tutorial. This will allow each machine to be reachable using a hostname such as `server`, `node-0`, or `node-1`.
+In this section you will generate a `hosts` file which will be appended to `/etc/hosts` file on `student-node` and to the `/etc/hosts` files on all three cluster members used for this tutorial. This will allow each machine to be reachable using a hostname such as `controlplane`, `node01`, or `node02`.
 
 Create a new `hosts` file and add a header to identify the machines being added:
 
@@ -154,14 +154,14 @@ cat hosts
 ```text
 
 # Kubernetes The Hard Way
-XXX.XXX.XXX.XXX server.kubernetes.local server
-XXX.XXX.XXX.XXX node-0.kubernetes.local node-0
-XXX.XXX.XXX.XXX node-1.kubernetes.local node-1
+XXX.XXX.XXX.XXX controlplane.kubernetes.local controlplane
+XXX.XXX.XXX.XXX node01.kubernetes.local node01
+XXX.XXX.XXX.XXX node02.kubernetes.local node02
 ```
 
 ## Adding `/etc/hosts` Entries To A Local Machine
 
-In this section you will append the DNS entries from the `hosts` file to the local `/etc/hosts` file on your `jumpbox` machine.
+In this section you will append the DNS entries from the `hosts` file to the local `/etc/hosts` file on your `studnet-node` machine.
 
 Append the DNS entries from `hosts` to `/etc/hosts`:
 
@@ -177,7 +177,7 @@ cat /etc/hosts
 
 ```text
 127.0.0.1       localhost
-127.0.1.1       jumpbox
+127.0.1.1       student-node
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback
@@ -187,9 +187,9 @@ ff02::2 ip6-allrouters
 
 
 # Kubernetes The Hard Way
-XXX.XXX.XXX.XXX server.kubernetes.local server
-XXX.XXX.XXX.XXX node-0.kubernetes.local node-0
-XXX.XXX.XXX.XXX node-1.kubernetes.local node-1
+XXX.XXX.XXX.XXX controlplane.kubernetes.local controlplane
+XXX.XXX.XXX.XXX node01.kubernetes.local node01
+XXX.XXX.XXX.XXX node02.kubernetes.local node02
 ```
 
 At this point you should be able to SSH to each machine listed in the `machines.txt` file using a hostname.
@@ -201,9 +201,9 @@ done
 ```
 
 ```text
-server aarch64 GNU/Linux
-node-0 aarch64 GNU/Linux
-node-1 aarch64 GNU/Linux
+controlplane x86_64 GNU/Linux
+node01 x86_64 GNU/Linux
+node02 x86_64 GNU/Linux
 ```
 
 ## Adding `/etc/hosts` Entries To The Remote Machines
