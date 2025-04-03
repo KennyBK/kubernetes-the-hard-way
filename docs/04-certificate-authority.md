@@ -26,7 +26,7 @@ Generate the CA configuration file, certificate, and private key:
     -config ca.conf \
     -out ca.crt
   mkdir -p pki/ca
-  mv ca* pki/ca
+  mv ca.* pki/ca
 }
 ```
 
