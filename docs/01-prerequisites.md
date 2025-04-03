@@ -8,7 +8,7 @@ This tutorial requires four (4) virtual or physical AMD64 machines running Ubunt
 
 | Name    | Description            | CPU | RAM   | Storage |
 |---------|------------------------|-----|-------|---------|
-| studentnode | Administration host    | 2   | 2GB | 10GB    |
+| student-node | Administration host    | 2   | 2GB | 10GB    |
 | controlplane  | Kubernetes server      | 2   | 4GB   | 20GB    |
 | node01  | Kubernetes worker node | 2   | 4GB   | 20GB    |
 | node02  | Kubernetes worker node | 2   | 4GB   | 20GB    |
