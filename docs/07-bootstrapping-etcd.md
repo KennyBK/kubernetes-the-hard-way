@@ -8,7 +8,7 @@ Copy `etcd` binaries and systemd unit files to the `controlplane` instance:
 
 ```bash
 scp \
-  downloads/etcd-v3.4.34-linux-arm64.tar.gz \
+  downloads/etcd-v3.4.34-linux-amd64.tar.gz \
   units/etcd.service \
   root@controlplane:~/
 ```
@@ -27,7 +27,7 @@ Extract and install the `etcd` server and the `etcdctl` command line utility:
 
 ```bash
 {
-  tar -xvf etcd-v3.4.34-linux-arm64.tar.gz
+  tar -xvf etcd-v3.4.34-linux-amd64.tar.gz
   mv etcd-v3.4.34-linux-arm64/etcd* /usr/local/bin/
 }
 ```
