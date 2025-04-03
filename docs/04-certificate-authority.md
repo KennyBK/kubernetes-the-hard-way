@@ -106,7 +106,7 @@ scp \
   pki/ca/ca.key pki/ca/ca.crt \
   pki/certs/kube-api-server.key pki/certs/kube-api-server.crt \
   pki/certs/service-accounts.key pki/certs/service-accounts.crt \
-  root@server:~/
+  root@controlplane:~/
 ```
 
 > The `kube-proxy`, `kube-controller-manager`, `kube-scheduler`, and `kubelet` client certificates will be used to generate client authentication configuration files in the next lab.
