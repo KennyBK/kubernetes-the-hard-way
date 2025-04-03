@@ -12,19 +12,25 @@ When generating kubeconfig files for Kubelets the client certificate matching th
 
 > The following commands must be run in the same directory used to generate the SSL certificates during the [Generating TLS Certificates](04-certificate-authority.md) lab.
 
-Generate a kubeconfig file for the node-0 worker node:
+Create folder to store .kubeconfig files
+```bash
+mkdir kubeconfig
+cd kubeconfig
+```
+
+Generate a kubeconfig file for the node0 worker node:
 
 ```bash
-for host in node-0 node-1; do
+for host in node01 node02; do
   kubectl config set-cluster kubernetes-the-hard-way \
-    --certificate-authority=ca.crt \
+    --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
-    --server=https://server.kubernetes.local:6443 \
+    --server=https://controlplane.kubernetes.local:6443 \
     --kubeconfig=${host}.kubeconfig
 
   kubectl config set-credentials system:node:${host} \
-    --client-certificate=${host}.crt \
-    --client-key=${host}.key \
+    --client-certificate=pki/certs/${host}.crt \
+    --client-key=pki/certs/${host}.key \
     --embed-certs=true \
     --kubeconfig=${host}.kubeconfig
 
@@ -41,8 +47,8 @@ done
 Results:
 
 ```text
-node-0.kubeconfig
-node-1.kubeconfig
+node01.kubeconfig
+node02.kubeconfig
 ```
 
 ### The kube-proxy Kubernetes Configuration File
@@ -52,14 +58,14 @@ Generate a kubeconfig file for the `kube-proxy` service:
 ```bash
 {
   kubectl config set-cluster kubernetes-the-hard-way \
-    --certificate-authority=ca.crt \
+    --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
-    --server=https://server.kubernetes.local:6443 \
+    --server=https://controlplane.kubernetes.local:6443 \
     --kubeconfig=kube-proxy.kubeconfig
 
   kubectl config set-credentials system:kube-proxy \
-    --client-certificate=kube-proxy.crt \
-    --client-key=kube-proxy.key \
+    --client-certificate=pki/certs/kube-proxy.crt \
+    --client-key=pki/certs/kube-proxy.key \
     --embed-certs=true \
     --kubeconfig=kube-proxy.kubeconfig
 
@@ -86,14 +92,14 @@ Generate a kubeconfig file for the `kube-controller-manager` service:
 ```bash
 {
   kubectl config set-cluster kubernetes-the-hard-way \
-    --certificate-authority=ca.crt \
+    --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
-    --server=https://server.kubernetes.local:6443 \
+    --server=https://controlplane.kubernetes.local:6443 \
     --kubeconfig=kube-controller-manager.kubeconfig
 
   kubectl config set-credentials system:kube-controller-manager \
-    --client-certificate=kube-controller-manager.crt \
-    --client-key=kube-controller-manager.key \
+    --client-certificate=pki/certs/kube-controller-manager.crt \
+    --client-key=pki/certs/kube-controller-manager.key \
     --embed-certs=true \
     --kubeconfig=kube-controller-manager.kubeconfig
 
@@ -121,14 +127,14 @@ Generate a kubeconfig file for the `kube-scheduler` service:
 ```bash
 {
   kubectl config set-cluster kubernetes-the-hard-way \
-    --certificate-authority=ca.crt \
+    --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
-    --server=https://server.kubernetes.local:6443 \
+    --server=https://controlplane.kubernetes.local:6443 \
     --kubeconfig=kube-scheduler.kubeconfig
 
   kubectl config set-credentials system:kube-scheduler \
-    --client-certificate=kube-scheduler.crt \
-    --client-key=kube-scheduler.key \
+    --client-certificate=pki/certs/kube-scheduler.crt \
+    --client-key=pki/certs/kube-scheduler.key \
     --embed-certs=true \
     --kubeconfig=kube-scheduler.kubeconfig
 
@@ -155,14 +161,14 @@ Generate a kubeconfig file for the `admin` user:
 ```bash
 {
   kubectl config set-cluster kubernetes-the-hard-way \
-    --certificate-authority=ca.crt \
+    --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
     --server=https://127.0.0.1:6443 \
     --kubeconfig=admin.kubeconfig
 
   kubectl config set-credentials admin \
-    --client-certificate=admin.crt \
-    --client-key=admin.key \
+    --client-certificate=pki/certs/admin.crt \
+    --client-key=pki/certs/admin.key \
     --embed-certs=true \
     --kubeconfig=admin.kubeconfig
 
@@ -187,13 +193,13 @@ admin.kubeconfig
 Copy the `kubelet` and `kube-proxy` kubeconfig files to the node-0 instance:
 
 ```bash
-for host in node-0 node-1; do
+for host in node01 node02; do
   ssh root@$host "mkdir /var/lib/{kube-proxy,kubelet}"
   
-  scp kube-proxy.kubeconfig \
+  scp kubeconfig/kube-proxy.kubeconfig \
     root@$host:/var/lib/kube-proxy/kubeconfig \
   
-  scp ${host}.kubeconfig \
+  scp kubeconfig/${host}.kubeconfig \
     root@$host:/var/lib/kubelet/kubeconfig
 done
 ```
@@ -201,9 +207,9 @@ done
 Copy the `kube-controller-manager` and `kube-scheduler` kubeconfig files to the controller instance:
 
 ```bash
-scp admin.kubeconfig \
-  kube-controller-manager.kubeconfig \
-  kube-scheduler.kubeconfig \
+scp kubeconfig/admin.kubeconfig \
+  kubeconfig/kube-controller-manager.kubeconfig \
+  kubeconfig/kube-scheduler.kubeconfig \
   root@server:~/
 ```
 
