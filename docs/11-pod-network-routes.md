@@ -14,37 +14,37 @@ Print the internal IP address and Pod CIDR range for each worker instance:
 
 ```bash
 {
-  SERVER_IP=$(grep server machines.txt | cut -d " " -f 1)
-  NODE_0_IP=$(grep node-0 machines.txt | cut -d " " -f 1)
-  NODE_0_SUBNET=$(grep node-0 machines.txt | cut -d " " -f 4)
-  NODE_1_IP=$(grep node-1 machines.txt | cut -d " " -f 1)
-  NODE_1_SUBNET=$(grep node-1 machines.txt | cut -d " " -f 4)
+  CONTROLPLANE_IP=$(grep controlplane machines.txt | cut -d " " -f 1)
+  NODE01_IP=$(grep node01 machines.txt | cut -d " " -f 1)
+  NODE01_SUBNET=$(grep node01 machines.txt | cut -d " " -f 4)
+  NODE02_IP=$(grep node02 machines.txt | cut -d " " -f 1)
+  NODE02_SUBNET=$(grep node02 machines.txt | cut -d " " -f 4)
 }
 ```
 
 ```bash
-ssh root@server <<EOF
-  ip route add ${NODE_0_SUBNET} via ${NODE_0_IP}
-  ip route add ${NODE_1_SUBNET} via ${NODE_1_IP}
+ssh root@controlplane <<EOF
+  ip route add ${NODE01_SUBNET} via ${NODE01_IP}
+  ip route add ${NODE02_SUBNET} via ${NODE02_IP}
 EOF
 ```
 
 ```bash
-ssh root@node-0 <<EOF
-  ip route add ${NODE_1_SUBNET} via ${NODE_1_IP}
+ssh root@node01 <<EOF
+  ip route add ${NODE02_SUBNET} via ${NODE02_IP}
 EOF
 ```
 
 ```bash
-ssh root@node-1 <<EOF
-  ip route add ${NODE_0_SUBNET} via ${NODE_0_IP}
+ssh root@node02 <<EOF
+  ip route add ${NODE01_SUBNET} via ${NODE01_IP}
 EOF
 ```
 
 ## Verification 
 
 ```bash
-ssh root@server ip route
+ssh root@controlplane ip route
 ```
 
 ```text
@@ -55,7 +55,7 @@ XXX.XXX.XXX.0/24 dev ens160 proto kernel scope link src XXX.XXX.XXX.XXX
 ```
 
 ```bash
-ssh root@node-0 ip route
+ssh root@node01 ip route
 ```
 
 ```text
@@ -65,7 +65,7 @@ XXX.XXX.XXX.0/24 dev ens160 proto kernel scope link src XXX.XXX.XXX.XXX
 ```
 
 ```bash
-ssh root@node-1 ip route
+ssh root@node02 ip route
 ```
 
 ```text
