@@ -1,20 +1,20 @@
 # Set Up The Jumpbox
 
-In this lab you will set up one of the four machines to be a `jumpbox`. This machine will be used to run commands in this tutorial. While a dedicated machine is being used to ensure consistency, these commands can also be run from just about any machine including your personal workstation running macOS or Linux.
+In this lab you will set up one of the four machines to be a `studnet-node`. This machine will be used to run commands in this tutorial. While a dedicated machine is being used to ensure consistency, these commands can also be run from just about any machine including your personal workstation running macOS or Linux.
 
-Think of the `jumpbox` as the administration machine that you will use as a home base when setting up your Kubernetes cluster from the ground up. One thing we need to do before we get started is install a few command line utilities and clone the Kubernetes The Hard Way git repository, which contains some additional configuration files that will be used to configure various Kubernetes components throughout this tutorial. 
+Think of the `studnet-node` as the administration machine that you will use as a home base when setting up your Kubernetes cluster from the ground up. One thing we need to do before we get started is install a few command line utilities and clone the Kubernetes The Hard Way git repository, which contains some additional configuration files that will be used to configure various Kubernetes components throughout this tutorial. 
 
-Log in to the `jumpbox`:
+Log in to the `studnet-node`:
 
 ```bash
-ssh root@jumpbox
+ssh root@studnet-node
 ```
 
 All commands will be run as the `root` user. This is being done for the sake of convenience, and will help reduce the number of commands required to set everything up.
 
 ### Install Command Line Utilities
 
-Now that you are logged into the `jumpbox` machine as the `root` user, you will install the command line utilities that will be used to preform various tasks throughout the tutorial. 
+Now that you are logged into the `studnet-node` machine as the `root` user, you will install the command line utilities that will be used to preform various tasks throughout the tutorial. 
 
 ```bash
 apt-get -y install wget curl vim openssl git
@@ -35,7 +35,7 @@ Change into the `kubernetes-the-hard-way` directory:
 cd kubernetes-the-hard-way
 ```
 
-This will be the working directory for the rest of the tutorial. If you ever get lost run the `pwd` command to verify you are in the right directory when running commands on the `jumpbox`:
+This will be the working directory for the rest of the tutorial. If you ever get lost run the `pwd` command to verify you are in the right directory when running commands on the `studnet-node`:
 
 ```bash
 pwd
@@ -47,7 +47,7 @@ pwd
 
 ### Download Binaries
 
-In this section you will download the binaries for the various Kubernetes components. The binaries will be stored in the `downloads` directory on the `jumpbox`, which will reduce the amount of internet bandwidth required to complete this tutorial as we avoid downloading the binaries multiple times for each machine in our Kubernetes cluster.
+In this section you will download the binaries for the various Kubernetes components. The binaries will be stored in the `downloads` directory on the `studnet-node`, which will reduce the amount of internet bandwidth required to complete this tutorial as we avoid downloading the binaries multiple times for each machine in our Kubernetes cluster.
 
 The binaries that will be downloaded are listed in the `downloads.txt` file, which you can review using the `cat` command:
 
@@ -88,7 +88,7 @@ total 510M
 
 ### Install kubectl
 
-In this section you will install the `kubectl`, the official Kubernetes client command line tool, on the `jumpbox` machine. `kubectl will be used to interact with the Kubernetes control once your cluster is provisioned later in this tutorial.
+In this section you will install the `kubectl`, the official Kubernetes client command line tool, on the `studnet-node` machine. `kubectl will be used to interact with the Kubernetes control once your cluster is provisioned later in this tutorial.
 
 Use the `chmod` command to make the `kubectl` binary executable and move it to the `/usr/local/bin/` directory:
 
@@ -110,6 +110,6 @@ Client Version: v1.31.2
 Kustomize Version: v5.4.2
 ```
 
-At this point the `jumpbox` has been set up with all the command line tools and utilities necessary to complete the labs in this tutorial.
+At this point the `studnet-node` has been set up with all the command line tools and utilities necessary to complete the labs in this tutorial.
 
 Next: [Provisioning Compute Resources](03-compute-resources.md)
