@@ -25,6 +25,8 @@ Generate the CA configuration file, certificate, and private key:
     -key ca.key -days 3653 \
     -config ca.conf \
     -out ca.crt
+  mkdir -p pki/ca
+  mv ca* pki/ca
 }
 ```
 
@@ -41,8 +43,12 @@ In this section you will generate client and server certificates for each Kubern
 Generate the certificates and private keys:
 
 ```bash
+mkdir -p pki/certs
+```
+
+```bash
 certs=(
-  "admin" "node-0" "node-1"
+  "admin" "node01" "node02"
   "kube-proxy" "kube-scheduler"
   "kube-controller-manager"
   "kube-api-server"
@@ -55,22 +61,22 @@ for i in ${certs[*]}; do
   openssl genrsa -out "${i}.key" 4096
 
   openssl req -new -key "${i}.key" -sha256 \
-    -config "ca.conf" -section ${i} \
+    -config pki/ca/ca.conf -section ${i} \
     -out "${i}.csr"
   
   openssl x509 -req -days 3653 -in "${i}.csr" \
     -copy_extensions copyall \
-    -sha256 -CA "ca.crt" \
-    -CAkey "ca.key" \
+    -sha256 -CA pki/ca/ca.crt \
+    -CAkey pki/ca/ca.key \
     -CAcreateserial \
-    -out "${i}.crt"
+    -out pki/certs/${i}.crt
 done
 ```
 
 The results of running the above command will generate a private key, certificate request, and signed SSL certificate for each of the Kubernetes components. You can list the generated files with the following command:
 
 ```bash
-ls -1 *.crt *.key *.csr
+ls -1 pki/certs/*.crt pki/certs/*.key pki/certs/*.csr
 ```
 
 ## Distribute the Client and Server Certificates
