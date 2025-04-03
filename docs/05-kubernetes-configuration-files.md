@@ -15,7 +15,6 @@ When generating kubeconfig files for Kubelets the client certificate matching th
 Create folder to store .kubeconfig files
 ```bash
 mkdir kubeconfig
-cd kubeconfig
 ```
 
 Generate a kubeconfig file for the node0 worker node:
@@ -26,21 +25,21 @@ for host in node01 node02; do
     --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
     --server=https://controlplane.kubernetes.local:6443 \
-    --kubeconfig=${host}.kubeconfig
+    --kubeconfig=kubeconfig/${host}.kubeconfig
 
   kubectl config set-credentials system:node:${host} \
     --client-certificate=pki/certs/${host}.crt \
     --client-key=pki/certs/${host}.key \
     --embed-certs=true \
-    --kubeconfig=${host}.kubeconfig
+    --kubeconfig=kubeconfig/${host}.kubeconfig
 
   kubectl config set-context default \
     --cluster=kubernetes-the-hard-way \
     --user=system:node:${host} \
-    --kubeconfig=${host}.kubeconfig
+    --kubeconfig=kubeconfig/${host}.kubeconfig
 
   kubectl config use-context default \
-    --kubeconfig=${host}.kubeconfig
+    --kubeconfig=kubeconfig/${host}.kubeconfig
 done
 ```
 
@@ -61,21 +60,21 @@ Generate a kubeconfig file for the `kube-proxy` service:
     --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
     --server=https://controlplane.kubernetes.local:6443 \
-    --kubeconfig=kube-proxy.kubeconfig
+    --kubeconfig=kubeconfig/kube-proxy.kubeconfig
 
   kubectl config set-credentials system:kube-proxy \
     --client-certificate=pki/certs/kube-proxy.crt \
     --client-key=pki/certs/kube-proxy.key \
     --embed-certs=true \
-    --kubeconfig=kube-proxy.kubeconfig
+    --kubeconfig=kubeconfig/kube-proxy.kubeconfig
 
   kubectl config set-context default \
     --cluster=kubernetes-the-hard-way \
     --user=system:kube-proxy \
-    --kubeconfig=kube-proxy.kubeconfig
+    --kubeconfig=kubeconfig/kube-proxy.kubeconfig
 
   kubectl config use-context default \
-    --kubeconfig=kube-proxy.kubeconfig
+    --kubeconfig=kubeconfig/kube-proxy.kubeconfig
 }
 ```
 
@@ -95,21 +94,21 @@ Generate a kubeconfig file for the `kube-controller-manager` service:
     --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
     --server=https://controlplane.kubernetes.local:6443 \
-    --kubeconfig=kube-controller-manager.kubeconfig
+    --kubeconfig=kubeconfig/kubeconfig/kube-controller-manager.kubeconfig
 
   kubectl config set-credentials system:kube-controller-manager \
     --client-certificate=pki/certs/kube-controller-manager.crt \
     --client-key=pki/certs/kube-controller-manager.key \
     --embed-certs=true \
-    --kubeconfig=kube-controller-manager.kubeconfig
+    --kubeconfig=kubeconfig/kube-controller-manager.kubeconfig
 
   kubectl config set-context default \
     --cluster=kubernetes-the-hard-way \
     --user=system:kube-controller-manager \
-    --kubeconfig=kube-controller-manager.kubeconfig
+    --kubeconfig=kubeconfig/kube-controller-manager.kubeconfig
 
   kubectl config use-context default \
-    --kubeconfig=kube-controller-manager.kubeconfig
+    --kubeconfig=kubeconfig/kube-controller-manager.kubeconfig
 }
 ```
 
@@ -130,21 +129,21 @@ Generate a kubeconfig file for the `kube-scheduler` service:
     --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
     --server=https://controlplane.kubernetes.local:6443 \
-    --kubeconfig=kube-scheduler.kubeconfig
+    --kubeconfig=kubeconfig/kube-scheduler.kubeconfig
 
   kubectl config set-credentials system:kube-scheduler \
     --client-certificate=pki/certs/kube-scheduler.crt \
     --client-key=pki/certs/kube-scheduler.key \
     --embed-certs=true \
-    --kubeconfig=kube-scheduler.kubeconfig
+    --kubeconfig=kubeconfig/kube-scheduler.kubeconfig
 
   kubectl config set-context default \
     --cluster=kubernetes-the-hard-way \
     --user=system:kube-scheduler \
-    --kubeconfig=kube-scheduler.kubeconfig
+    --kubeconfig=kubeconfig/kube-scheduler.kubeconfig
 
   kubectl config use-context default \
-    --kubeconfig=kube-scheduler.kubeconfig
+    --kubeconfig=kubeconfig/kube-scheduler.kubeconfig
 }
 ```
 
@@ -164,21 +163,21 @@ Generate a kubeconfig file for the `admin` user:
     --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
     --server=https://127.0.0.1:6443 \
-    --kubeconfig=admin.kubeconfig
+    --kubeconfig=kubeconfig/admin.kubeconfig
 
   kubectl config set-credentials admin \
     --client-certificate=pki/certs/admin.crt \
     --client-key=pki/certs/admin.key \
     --embed-certs=true \
-    --kubeconfig=admin.kubeconfig
+    --kubeconfig=kubeconfig/admin.kubeconfig
 
   kubectl config set-context default \
     --cluster=kubernetes-the-hard-way \
     --user=admin \
-    --kubeconfig=admin.kubeconfig
+    --kubeconfig=kubeconfig/admin.kubeconfig
 
   kubectl config use-context default \
-    --kubeconfig=admin.kubeconfig
+    --kubeconfig=kubeconfig/admin.kubeconfig
 }
 ```
 
