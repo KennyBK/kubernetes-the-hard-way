@@ -7,7 +7,7 @@ In this lab you will bootstrap two Kubernetes worker nodes. The following compon
 Copy Kubernetes binaries and systemd unit files to each worker instance:
 
 ```bash
-for host in node-0 node-1; do
+for host in node01 node02; do
   SUBNET=$(grep $host machines.txt | cut -d " " -f 4)
   sed "s|SUBNET|$SUBNET|g" \
     configs/10-bridge.conf > 10-bridge.conf 
@@ -21,12 +21,12 @@ done
 ```
 
 ```bash
-for host in node-0 node-1; do
+for host in node01 node02; do
   scp \
-    downloads/runc.arm64 \
-    downloads/crictl-v1.31.1-linux-arm64.tar.gz \
-    downloads/cni-plugins-linux-arm64-v1.6.0.tgz \
-    downloads/containerd-2.0.0-linux-arm64.tar.gz \
+    downloads/runc.amd64 \
+    downloads/crictl-v1.31.1-linux-amd64.tar.gz \
+    downloads/cni-plugins-linux-amd64-v1.6.0.tgz \
+    downloads/containerd-2.0.0-linux-amd64.tar.gz \
     downloads/kubectl \
     downloads/kubelet \
     downloads/kube-proxy \
@@ -41,10 +41,10 @@ for host in node-0 node-1; do
 done
 ```
 
-The commands in this lab must be run on each worker instance: `node-0`, `node-1`. Login to the worker instance using the `ssh` command. Example:
+The commands in this lab must be run on each worker instance: `node01`, `node02`. Login to the worker instance using the `ssh` command. Example:
 
 ```bash
-ssh root@node-0
+ssh root@node01
 ```
 
 ## Provisioning a Kubernetes Worker Node
@@ -95,10 +95,10 @@ Install the worker binaries:
 ```bash
 {
   mkdir -p containerd
-  tar -xvf crictl-v1.31.1-linux-arm64.tar.gz
-  tar -xvf containerd-2.0.0-linux-arm64.tar.gz -C containerd
-  tar -xvf cni-plugins-linux-arm64-v1.6.0.tgz -C /opt/cni/bin/
-  mv runc.arm64 runc
+  tar -xvf crictl-v1.31.1-linux-amd64.tar.gz
+  tar -xvf containerd-2.0.0-linux-amd64.tar.gz -C containerd
+  tar -xvf cni-plugins-linux-amd64-v1.6.0.tgz -C /opt/cni/bin/
+  mv runc.amd64 runc
   chmod +x crictl kubectl kube-proxy kubelet runc 
   mv crictl kubectl kube-proxy kubelet runc /usr/local/bin/
   mv containerd/bin/* /bin/
@@ -157,20 +157,20 @@ Create the `kubelet-config.yaml` configuration file:
 
 ## Verification
 
-The compute instances created in this tutorial will not have permission to complete this section. Run the following commands from the `jumpbox` machine.
+The compute instances created in this tutorial will not have permission to complete this section. Run the following commands from the `student-node` machine.
 
 List the registered Kubernetes nodes:
 
 ```bash
-ssh root@server \
+ssh root@controlplane \
   "kubectl get nodes \
   --kubeconfig admin.kubeconfig"
 ```
 
 ```
 NAME     STATUS   ROLES    AGE    VERSION
-node-0   Ready    <none>   1m     v1.31.2
-node-1   Ready    <none>   10s    v1.31.2
+node01   Ready    <none>   1m     v1.31.2
+node02   Ready    <none>   10s    v1.31.2
 ```
 
 Next: [Configuring kubectl for Remote Access](10-configuring-kubectl.md)
