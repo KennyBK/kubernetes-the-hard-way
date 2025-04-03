@@ -58,13 +58,13 @@ certs=(
 
 ```bash
 for i in ${certs[*]}; do
-  openssl genrsa -out "${i}.key" 4096
+  openssl genrsa -out pki/certs/${i}.key 4096
 
-  openssl req -new -key "${i}.key" -sha256 \
-    -config pki/ca/ca.conf -section ${i} \
-    -out "${i}.csr"
+  openssl req -new -key pki/certs/${i}.key -sha256 \
+    -config pki/ca/ca.conf -section pki/certs/${i} \
+    -out pki/certs/${i}.csr
   
-  openssl x509 -req -days 3653 -in "${i}.csr" \
+  openssl x509 -req -days 3653 -in pki/certs/${i}.csr \
     -copy_extensions copyall \
     -sha256 -CA pki/ca/ca.crt \
     -CAkey pki/ca/ca.key \
