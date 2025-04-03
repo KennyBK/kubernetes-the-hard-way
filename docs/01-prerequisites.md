@@ -25,6 +25,4 @@ After running the `uname` command you should see the following output:
 #26~22.04.1-Ubuntu SMP Wed Feb 19 06:54:57 UTC 2025 x86_64 GNU/Linux
 ```
 
-You maybe surprised to see `aarch64` here, but that is the official name for the Arm Architecture 64-bit instruction set. You will often see `arm64` used by Apple, and the maintainers of the Linux kernel, when referring to support for `aarch64`. This tutorial will use `arm64` consistently throughout to avoid confusion.
-
 Next: [setting-up-the-jumpbox](02-jumpbox.md)
