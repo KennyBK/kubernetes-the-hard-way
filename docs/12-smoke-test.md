@@ -116,7 +116,6 @@ Switch back to the previous terminal and stop the port forwarding to the `nginx`
 Forwarding from 127.0.0.1:8080 -> 80
 Forwarding from [::1]:8080 -> 80
 Handling connection for 8080
-^C
 ```
 
 ### Logs
@@ -173,7 +172,7 @@ NODE_PORT=$(kubectl get svc nginx \
 Make an HTTP request using the IP address and the `nginx` node port:
 
 ```bash
-curl -I http://node-0:${NODE_PORT}
+curl -I http://node01:${NODE_PORT}
 ```
 
 ```text
