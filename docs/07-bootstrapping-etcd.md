@@ -16,7 +16,7 @@ scp \
 The commands in this lab must be run on the `controlplane` machine. Login to the `controlplane` machine using the `ssh` command. Example:
 
 ```bash
-ssh root@server
+ssh root@controlplane
 ```
 
 ## Bootstrapping an etcd Cluster
