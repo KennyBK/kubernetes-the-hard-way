@@ -4,16 +4,16 @@ Kubernetes components are stateless and store cluster state in [etcd](https://gi
 
 ## Prerequisites
 
-Copy `etcd` binaries and systemd unit files to the `server` instance:
+Copy `etcd` binaries and systemd unit files to the `controlplane` instance:
 
 ```bash
 scp \
   downloads/etcd-v3.4.34-linux-arm64.tar.gz \
   units/etcd.service \
-  root@server:~/
+  root@controlplane:~/
 ```
 
-The commands in this lab must be run on the `server` machine. Login to the `server` machine using the `ssh` command. Example:
+The commands in this lab must be run on the `controlplane` machine. Login to the `controlplane` machine using the `ssh` command. Example:
 
 ```bash
 ssh root@server
