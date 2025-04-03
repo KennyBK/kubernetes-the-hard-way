@@ -94,7 +94,7 @@ Generate a kubeconfig file for the `kube-controller-manager` service:
     --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
     --server=https://controlplane.kubernetes.local:6443 \
-    --kubeconfig=kubeconfig/kubeconfig/kube-controller-manager.kubeconfig
+    --kubeconfig=kubeconfig/kube-controller-manager.kubeconfig
 
   kubectl config set-credentials system:kube-controller-manager \
     --client-certificate=pki/certs/kube-controller-manager.crt \
