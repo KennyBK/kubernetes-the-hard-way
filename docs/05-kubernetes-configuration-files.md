@@ -210,7 +210,7 @@ Copy the `kube-controller-manager` and `kube-scheduler` kubeconfig files to the 
 scp kubeconfig/admin.kubeconfig \
   kubeconfig/kube-controller-manager.kubeconfig \
   kubeconfig/kube-scheduler.kubeconfig \
-  root@server:~/
+  root@controlplane:~/
 ```
 
 Next: [Generating the Data Encryption Config and Key](06-data-encryption-keys.md)
