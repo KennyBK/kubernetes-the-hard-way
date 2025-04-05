@@ -2,13 +2,13 @@
 
 In this lab you will generate a kubeconfig file for the `kubectl` command line utility based on the `admin` user credentials.
 
-> Run the commands in this lab from the `jumpbox` machine.
+> Run the commands in this lab from the `student-node` machine.
 
 ## The Admin Kubernetes Configuration File
 
 Each kubeconfig requires a Kubernetes API Server to connect to.
 
-You should be able to ping `server.kubernetes.local` based on the `/etc/hosts` DNS entry from a previous lap.
+You should be able to ping `controlplane.kubernetes.local` based on the `/etc/hosts` DNS entry from a previous lap.
 
 ```bash
 curl -k --cacert ca.crt \
