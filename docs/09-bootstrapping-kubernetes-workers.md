@@ -32,7 +32,6 @@ for host in node01 node02; do
     downloads/kube-proxy \
     configs/99-loopback.conf \
     configs/containerd-config.toml \
-    configs/kubelet-config.yaml \
     configs/kube-proxy-config.yaml \
     units/containerd.service \
     units/kubelet.service \
