@@ -28,7 +28,7 @@ Extract and install the `etcd` server and the `etcdctl` command line utility:
 ```bash
 {
   tar -xvf etcd-v3.4.34-linux-amd64.tar.gz
-  mv etcd-v3.4.34-linux-arm64/etcd* /usr/local/bin/
+  mv etcd-v3.4.34-linux-amd64/etcd* /usr/local/bin/
 }
 ```
 
