@@ -12,7 +12,7 @@ You should be able to ping `controlplane.kubernetes.local` based on the `/etc/ho
 
 ```bash
 curl -k --cacert ca.crt \
-  https://server.kubernetes.local:6443/version
+  https://controlplane.kubernetes.local:6443/version
 ```
 
 ```text
