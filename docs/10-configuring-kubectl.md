@@ -34,13 +34,13 @@ Generate a kubeconfig file suitable for authenticating as the `admin` user:
 ```bash
 {
   kubectl config set-cluster kubernetes-the-hard-way \
-    --certificate-authority=ca.crt \
+    --certificate-authority=pki/ca/ca.crt \
     --embed-certs=true \
-    --server=https://server.kubernetes.local:6443
+    --server=https://controlplane.kubernetes.local:6443
 
   kubectl config set-credentials admin \
-    --client-certificate=admin.crt \
-    --client-key=admin.key
+    --client-certificate=pki/certs/admin.crt \
+    --client-key=pki/certs/admin.key
 
   kubectl config set-context kubernetes-the-hard-way \
     --cluster=kubernetes-the-hard-way \
